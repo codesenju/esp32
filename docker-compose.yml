@@ -1,0 +1,11 @@
+services:
+  ruview:
+    image: ruvnet/wifi-densepose:latest
+    container_name: ruview
+    environment:
+      CSI_SOURCE: esp32
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "5005:5005/udp"
+    restart: unless-stopped

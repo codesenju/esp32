@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ruview
+  labels:
+    app: ruview
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ruview
+  template:
+    metadata:
+      labels:
+        app: ruview
+    spec:
+      containers:
+        - name: ruview
+          image: ruvnet/wifi-densepose:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: CSI_SOURCE
+              value: "esp32"
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+            - name: websocket
+              containerPort: 3001
+              protocol: TCP
+            - name: csi-udp
+              containerPort: 5005
+              protocol: UDP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ruview
+  labels:
+    app: ruview
+spec:
+  selector:
+    app: ruview
+  type: NodePort
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+      nodePort: 30080
+    - name: websocket
+      port: 3001
+      targetPort: 3001
+      protocol: TCP
+      nodePort: 30081
+    - name: csi-udp
+      port: 5005
+      targetPort: 5005
+      protocol: UDP
+      nodePort: 30085
