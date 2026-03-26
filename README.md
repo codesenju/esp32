@@ -69,6 +69,7 @@ esptool --chip esp32s3 \
            ota_data_initial.bin 0x10000 \
            esp32-csi-node.bin
 ```
+
 ---
 
 # ⚙️ Step 5 — Provision WiFi + Server
